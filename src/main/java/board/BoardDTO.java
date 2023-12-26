@@ -13,7 +13,7 @@ public class BoardDTO {
 	/* 
 	   client ---> controller --> DTO --> DAO --> DB
 	   DataBase의 Board 테이블의 각 컬럼의 값을 매칭해주는 DTO
-	   	- 필드의 접근 제어자는 private
+	   	- 필드의 접근 제어자는 private로  세팅
 	   	- DB의 컬럼과 같은 데이터 형식으로 자료형이 지정
 	   	- 기본 생성자
 	   	- getter / setter , public 접근제어자가 지정

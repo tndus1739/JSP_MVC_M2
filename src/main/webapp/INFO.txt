@@ -32,15 +32,15 @@ MVC M1 : *.jsp --> 하나의 jsp에 Model ,  view , controller 가 포함
  	 	
  ======================================================================================================
  
- 	1. DB 연결 클래스 생성 : Connection 객체 사용할 DB 연결
+ 	★ 1. DB 연결 클래스 생성 : Connection 객체 사용할 DB 연결
  	 - common.JDBCUtil.java
- 	2. DB ( ORacle) 에 개발할 테이블 생성 (MVC)
+ 	★ 2. DB ( ORacle) 에 개발할 테이블 생성 (MVC)
  	 - users  : 사용자 정보 , user , acmin
  	 - board : user, admin
  	 - product : admin( 관리자만 접근 가능 ) 
  	 
  =======================================================================================================
-   -- MVC 로 개발될 테이블
+   -- MVC 로 개발될 테이블 (Oracle)
 
 create table board (
      seq number(5) not null primary key ,
@@ -70,7 +70,7 @@ create table products (
  
  
  ======================================================================================	  
- 	3. controller : 서블릿으로 생성
+ 	★ 3. controller : 서블릿으로 생성
  	 	- 서블릿 : *.java --> 웹페이지로 출력 , jsp의 <% %>  --톰캣-->  서블릿으로 변환 후 출력
  	 	- 작동 : 2가지 방법
  	 		  - web.xml 셋팅 : Client 요청에 대한 controller Mapping --> 몰라도 됨
@@ -87,6 +87,23 @@ create table products (
  	 	- post : form method = "post"
  	 			 http 헤더 앞에 파라미터를 서버로 보냄
  	 	
- 	4. DTO 생성
- 	5. DAO 생성
- 	6. View 페이지 생성
+ 	★ 4. DTO 생성
+ 	
+ 	  client ---> controller --> DTO --> DAO --> DB
+	   DataBase의 Board 테이블의 각 컬럼의 값을 매칭해주는 DTO
+	   	- 필드의 접근 제어자는 private로  세팅
+	   	- DB의 컬럼과 같은 데이터 형식으로 자료형이 지정
+	   	- 기본 생성자
+	   	- getter / setter , public 접근제어자가 지정
+	   	- toString () 오버라이딩
+	   	
+ 	★ 5. DAO 생성
+ 	
+ 	  테이블에 값을 insert, update , delete select 쿼리 , 메소드
+ 	
+ 
+ 	★ 6. DAO의 메소드 테스트
+ 	
+ 	★ 7. View 페이지 생성 : html ,JSP 사용해서 만들 수 있음 ( Webapp 폴더에 만들기)
+ 	
+ 	
