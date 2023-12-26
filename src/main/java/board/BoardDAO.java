@@ -19,11 +19,12 @@ public class BoardDAO {
 																						// null을 0으로 처리하는 함수 nvl을 적용
 	
 	
-	// DB의 Board 테이블의 모든 레코드를 출력하는 쿼리
+	// DB의 Board 테이블의 모든 레코드를 출력하는 쿼리 : 레코드 여러개 -> 레코드 하나가 dto 하나이고 dto 하나하나를 ArraryList에 담아서 List를 리턴
 	
 	private final String BOARD_LIST = "select * from board order by seq desc" ;
 	
-	
+	// DB의 Board 테이블의 글 상세 조회 : 레코드 1개 -> 리턴으로 DTO 돌려줌
+	private final String BOARD_GET = "select * from board where seq = ? ";
 	
 	// insertBoard ( BoardDTO dto ) 메소드  :
 	public void insertBoard ( BoardDTO dto ) {				// insertBoard 메소드를 호출하면 try 구문이 실행됨
@@ -128,7 +129,58 @@ public class BoardDAO {
 		}
 	
 	
-	
+		// 글 상세 조회 : getBoard(dto)
+		public BoardDTO getBoard (BoardDTO dto) {
+			
+			System.out.println("getBoard 메소드 호출 성공");
+			
+			BoardDTO board = new BoardDTO () ;
+			
+			try {
+				
+				conn = JDBCUtil.getConnection();
+				// BOARD_GET = "select * from board where seq = ? "
+				pstmt = conn.prepareStatement(BOARD_GET);
+				pstmt.setInt(1, dto.getSeq());    // ?에 값 넣어줌
+			
+				// rs : 레코드 1개
+				
+				rs = pstmt.executeQuery();
+				
+				//rs의 값이 존재할 때 
+				
+				while (rs.next()) {
+				
+					board.setSeq(rs.getInt("SEQ"));        // board라는 dto에 담는다. 리턴값으로 board 둘려줌
+					board.setTitle(rs.getString("TITLE"));
+					board.setWrite(rs.getString("WRITE"));
+					board.setContent(rs.getString("CONTENT"));
+					board.setRegdate(rs.getDate("REGDATE"));
+					board.setCnt(rs.getInt("CNT"));
+					
+					System.out.println("RS의 레코드를 dto 저장 성공");
+		
+				}
+			
+			} catch (Exception e ) {
+				
+				System.out.println("글 상셍조회 실패");
+				e.printStackTrace();
+			
+			} finally {
+				
+				JDBCUtil.close(rs, pstmt, conn);
+			}
+			
+			
+			
+			return board ;
+			
+		}
+		
+		
+		
+		
 	
 	
 	

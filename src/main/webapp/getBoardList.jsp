@@ -17,7 +17,7 @@
 	
 	try {
 		
-		boardList = (List) session.getAttribute("boardList");     // 바로 호출하지말고 do요청을 해야함
+		boardList = (List) session.getAttribute("boardList");   // list 타입으로 캐스팅해줘야 함  // 바로 호출하지말고 do요청을 해야함
 
 	} catch ( Exception e ) {
 		
@@ -61,18 +61,30 @@
 		
 		
 		<tr> <td align = "center" > <%= k.getSeq()  %></td>
-			 <td> <%= k.getTitle()  %></td>
+		
+			 <!--  제목에 링크를 건다 : 글 상세 내용을 볼 수 있도록 ( get title에 링크 걸기) -->
+			 
+			 <td> 
+			 	<a href = "getboard.do?seq=<%= k.getSeq() %>"> <%= k.getTitle()  %> </a>
+			 </td>
 			 <td> <%= k.getWrite()  %></td>
 			 <td> <%= k.getRegdate()  %></td>
 			 <td> <%= k.getCnt()  %></td>
 		</tr>
 	
 		<%
-			}
-		
+			}    // for문 블락의 끝
+			
+			
+			
+			// 모두 사용됨 : boardList
+			// 세션 변수의 값을 제거 : 서버의 메모리에서 세션 변수 boardList에 저장한 값을 제거
+			
+			session.removeAttribute("boardList");
+			
 		%>
 		
-	
+		
 		
 	
 	

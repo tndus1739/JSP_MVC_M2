@@ -121,6 +121,33 @@ public class Board_Controller extends HttpServlet {
 				}else if (path.equals("/getBoard.do")) {
 					System.out.println("/getBoard.do 요청");
 					// 로직 처리
+					
+					//  1. client 에서 넘어오는 파라미터 seq변수의 값을 읽어서 dto에 저장 후 dao.getBoard(dto)
+					// http://localhost:8181/JSP_MVC_M2/getBoard.do?seq=5
+					int seq = Integer.parseInt(request.getParameter("seq")) ; // request.getParameter("seq")가 String 형태라서 int로 변환시켜야함
+					
+					// 2. dto에 seq 값을  setter 주입
+					BoardDTO dto = new BoardDTO ();
+					
+					dto.setSeq(seq);
+					
+					// 3. DAO의 getBoard (dto) 호출 후 리턴 값을 받아서 저장
+					BoardDAO dao = new BoardDAO () ;
+					
+					// 리턴값을 받을 DTO 선언
+					
+					BoardDTO board = new BoardDTO () ;
+					
+					board = dao.getBoard(dto);  // 리턴값으로 board를 넘겨준다.
+					
+					// 4. 세션 변수에 저장후 뷰 페이지로 전송
+					HttpSession session = request.getSession();
+					
+					session.setAttribute("board", board) ;
+					
+					// 5. 뷰 페이지
+					response.sendRedirect("getBoard.jsp");
+					
 				}else if (path.equals("/updateBoard.do")) {
 					System.out.println("/updateBoard.do 요청");
 					// 로직 처리
