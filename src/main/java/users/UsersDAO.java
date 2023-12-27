@@ -38,7 +38,10 @@ public class UsersDAO {
 			// ? 변수의 값 할당
 			
 			pstmt.setString(1, dto.getId());
-			pstmt.setString(2, dto.getPassword());
+			pstmt.setString(2, dto.getPassword()); 
+			
+			System.out.println(dto.getId());
+			System.out.println(dto.getPassword());
 			
 			// pstmt 실행 후 rs로 쿼리한 레코드 저장
 			
