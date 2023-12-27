@@ -24,13 +24,17 @@
 <title> 글 상세 페이지</title>
 </head>
 <body>
-
+<center>
 
 	<h1> 글 상세 페이지 ( 수정이 가능하도록 )</h1>
 	<hr> 
 	<br> <br>
 	
-	<form >
+	<form method = "post" action = "updateBoard.do">
+	
+		<!--  글 수정시 조건을 처리할 컬럼  -->
+		<input type = "hidden" name = "seq" value = "<%= board.getSeq()  %>" >
+		
 		<table border = "1" width = "700px" cellpedding = "5px">
 			<tr> <td bgcolor = "pink" align ="center" > 제목 </td>
 				 <td> <input type ="text" name = "title" value="<%= board.getTitle() %>" > </td>
@@ -41,7 +45,7 @@
 			</tr>
 			
 			<tr> <td bgcolor = "pink" align ="center"> 내용 </td>
-				 <td> <textarea rows = "10" cols ="70" > <%= board.getTitle() %>" > </textarea> </td>
+				 <td> <textarea name ="content"  rows = "10" cols ="70" > <%= board.getTitle() %>" > </textarea> </td>
 			</tr>
 			
 			<tr> <td bgcolor = "pink" align ="center"> 등록일 </td>
@@ -60,21 +64,20 @@
 		</table>
 	
 	
-	
-	
-	
 	</form>
 	
+	<br> <br>
+	 <a href = "deleteBoard.do?seq=<%= board.getSeq() %>" > 
+	  글삭제
+	 </a>
+	
+	<p /> <a href="http://localhost:8181/JSP_MVC_M2"> 홈으로 </a>
+		
+		<p /> <a href = "getBoardList.do"> 글목록 </a>
+		<p /> <a href = "insertBoard.jsp"> 새글쓰기 </a>
+	
 	
 
-
-
-
-
-
-
-
-
-
+</center>
 </body>
 </html>

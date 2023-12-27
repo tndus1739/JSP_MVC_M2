@@ -34,7 +34,7 @@ public class User_controller extends HttpServlet {
 		//"/getUsers.act"
 		//"/getUsersList.act"
 		//"/login.act"
-		
+		//
 		request.setCharacterEncoding("UTF-8");
 		System.out.println("act 요청을 처리하는 controller입니다. ");
 		

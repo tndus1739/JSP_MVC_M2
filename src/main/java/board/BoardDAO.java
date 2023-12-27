@@ -26,6 +26,16 @@ public class BoardDAO {
 	// DB의 Board 테이블의 글 상세 조회 : 레코드 1개 -> 리턴으로 DTO 돌려줌
 	private final String BOARD_GET = "select * from board where seq = ? ";
 	
+	// DB의 Board 테이블의 Update 쿼리
+	private final String BOARD_UPDATE = "update board set title = ? , write = ? , content = ? where seq = ? ";   // ?에 변수값 넘어옴
+	
+	// DB의 Board 테이블의 Delete 쿼리
+	private final String BOARD_DELETE = "delete board where seq = ? " ;
+	
+	// 글 조회수 증가시키는 쿼리
+	
+	private final String ADD_CNT = "update board set cnt = cnt + 1 where seq = ? " ;
+	
 	// insertBoard ( BoardDTO dto ) 메소드  :
 	public void insertBoard ( BoardDTO dto ) {				// insertBoard 메소드를 호출하면 try 구문이 실행됨
 		System.out.println("insertBoard 기능 처리 =");
@@ -58,13 +68,13 @@ public class BoardDAO {
 		
 	
 	}
-
+	// 리턴타입이 없음
 	
 		// Board 테이블의 전체 레코드를 출력하는 메소드
 		// DB에 레코드 하나를 BoardDTO에 담는다. 각 각의 BoardDTO 를 ArrayList 안에 담아서 리턴
 		// 위의 rs, pstmt , conn 객체 사용
 	
-		public List<BoardDTO> getBoardList (BoardDTO dto)  {    
+		public List<BoardDTO> getBoardList (BoardDTO dto)  {     // -> 데이터 양이 많으면 리턴값을 List로
 			
 			// ★ ArrayList는 while 문 밖에서 선언 ( 안에서 선언하면 0번 방만 계속 반복) 
 			// ★ ArrayList 내에 저장되는 BoardDTO 는 while 문 안에서 선언
@@ -129,10 +139,13 @@ public class BoardDAO {
 		}
 	
 	
-		// 글 상세 조회 : getBoard(dto)
+		// 글 상세 조회 : getBoard(dto)  -> 레코드가 하나이기 때문에 리턴값을 그냥 DTO로 해도 됨
 		public BoardDTO getBoard (BoardDTO dto) {
 			
 			System.out.println("getBoard 메소드 호출 성공");
+			
+			// 하위에 있는 조회수 증가 메소드 호출
+			addCNT(dto) ;   
 			
 			BoardDTO board = new BoardDTO () ;
 			
@@ -179,9 +192,109 @@ public class BoardDAO {
 		}
 		
 		
+		// 글 수정 메소드 : updateBoard(dto)        // select 구문은 rs객체가 필요하지만 delete, insert update는 rs 가 필요없다. 리턴 값도 없다.
+		
+		public void updateBoard(BoardDTO dto) {
+			
+			System.out.println("updateBoard 메소드 호출됨");  //  잘 작동하면 주석처리
+			
+			try {
+				
+				conn = JDBCUtil.getConnection();
+				// BOARD_UPDATE ="update board set title = ? , write = ? , content = ? where seq = ? "
+				pstmt = conn.prepareStatement(BOARD_UPDATE);
+				
+				// ? 변수에 값을 할당
+				pstmt.setString(1, dto.getTitle());
+				pstmt.setString(2, dto.getWrite());
+				pstmt.setString(3, dto.getContent());
+				pstmt.setInt(4, dto.getSeq());
+				
+				// 쿼리를 실행
+				pstmt.executeUpdate();          // insert, update, delete 구문일 때 실행
+				
+				System.out.println("DB 업데이트 성공");
+				
+			} catch (Exception e) {
+				
+				System.out.println("DB 업데이트 실패");
+				e.printStackTrace();                  // 안찍으면 콘솔에서 원인이 출력이 안됨
+			
+			} finally {
+				
+				JDBCUtil.close(pstmt, conn);
+			}
+			
+			
+			
+			
+			
+		}
 		
 		
-	
+		// 글 삭제 메소드 : deleteBoared(dto)
+		
+		public void deleteBoard (BoardDTO dto) {
+			
+			try {
+				
+				conn = JDBCUtil.getConnection();
+				
+				// BOARD_DELETE = "delete board where seq = ? "
+				pstmt = conn.prepareStatement(BOARD_DELETE);
+				
+				// ? 변수값 할당
+
+				pstmt.setInt(1, dto.getSeq());
+				
+				// 쿼리 실행
+				pstmt.executeUpdate();     // insert, update, delete
+				System.out.println("DB 업데이트 성공");
+			} catch (Exception e) {
+				
+				System.out.println("DB 업데이트 실패");
+				e.printStackTrace();                  // 안찍으면 콘솔에서 원인이 출력이 안됨
+			} finally {
+				
+				JDBCUtil.close(pstmt, conn);
+			}
+			
+			
+		}
+		
+		// 글 조회수 증가시키는 메소드 
+		
+		public void addCNT ( BoardDTO dto) {
+			
+			try {
+				
+				conn = JDBCUtil.getConnection();
+				// ADD_CNT = "update board set cnt = cnt + 1 where seq = ? "
+				
+				pstmt = conn.prepareStatement(ADD_CNT);
+				
+				pstmt.setInt(1, dto.getSeq());
+				
+				// 쿼리 실행
+				
+				pstmt.executeUpdate();
+				
+				System.out.println("DB 업데이트 성공");
+				
+			} catch (Exception e) {
+
+				System.out.println("DB 업데이트 실패");
+				e.printStackTrace();                  // 안찍으면 콘솔에서 원인이 출력이 안됨
+			
+				
+			} finally {
+				JDBCUtil.close(pstmt, conn);
+			}		
+				
+			
+			
+			
+		}
 	
 	
 }
