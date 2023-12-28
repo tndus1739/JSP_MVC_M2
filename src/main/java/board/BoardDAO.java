@@ -177,7 +177,7 @@ public class BoardDAO {
 			
 			} catch (Exception e ) {
 				
-				System.out.println("글 상셍조회 실패");
+				System.out.println("글 상세조회 실패");
 				e.printStackTrace();
 			
 			} finally {

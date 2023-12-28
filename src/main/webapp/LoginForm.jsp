@@ -26,8 +26,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-
-	<h1>로그인 폼 페이지</h1>
+<center>
+	<h1>로그인 페이지</h1>
 	<hr>
 	<p />
 	
@@ -37,7 +37,7 @@
 	%>
 	
 
-	<form method="post" action="login.us">
+	<form method="post" action="login.mm">
 		<!--  중요한 정보니까 post 방식으로 넘기기  -->
 		<table>
 
@@ -65,7 +65,7 @@
 	</form>
 
 	<p />
-	<a href="http://localhost:8181/JSP_MVC_M2"> 홈으로 </a>
+	<a href="http://localhost:8181/JSP_MY_PROJ"> 홈으로 </a>
 
     <%
     
@@ -76,12 +76,12 @@
 		<%= sessionId %> 님 로그인 되었습니다.  <p />
 		당신의 권한은 <%= sessionRole  %>입니다. <p />
 
-		<a href = "logout.us"> 로그아웃 </a>
+		<a href = "logout.mm"> 로그아웃 </a>
 
 	<%
 	  } 
 	
 	%>
-
+</center>
 </body>
 </html>

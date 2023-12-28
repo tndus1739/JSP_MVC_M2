@@ -54,8 +54,8 @@ public class Board_Controller extends HttpServlet {
 					
 					// 1. 클라이언틀의 넘어오는 변수가 잘 들어 오는지 확인 ( 클라이언트 요청 : /insertBoard.do 요청)
 					
-					String title = request.getParameter("tilte");   // 클라이언트에서 넘어오는 변수를 getParameter를 통해 새로운 변수에 담기 
-					String write = request.getParameter("write");
+					String title = request.getParameter("title");   // 클라이언트에서 넘어오는 변수를 getParameter를 통해 새로운 변수에 담기 
+					String write = request.getParameter("write");	// insertboard.jsp파일에서 form 항목 이름과 같아야 한다.
 					String content = request.getParameter("content");
 					
 					/* 잘 처리됐으면 주석처리
