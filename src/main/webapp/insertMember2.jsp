@@ -42,7 +42,7 @@
 	
 	<hr color = "pink">
 	
-	<form method = "post" action = "memberInsert.ac">
+	<form method = "post" action = "member2Insert.mem">
 	
 	<table width = "900px" border = "1px">
 	
@@ -108,6 +108,20 @@
 		 </td>
 		 
 	 </tr>
+	
+	<tr> <td align = "right" > 첨부 사진 : </td>
+		<td><input type ="file" name = "file" > "10MB까지만 업로드 해주세요"></td>
+	</tr>
+	
+	<tr> <td colspan = "2" align ="center">
+	<input type ="reset" value = "다시작성(리셋)">  &nbsp; &nbsp;
+	<input type = "submit" value = "전송(서버로 전송)">
+	</td>
+		
+	</tr>
+	
+	
+	
 	
 	
 	
