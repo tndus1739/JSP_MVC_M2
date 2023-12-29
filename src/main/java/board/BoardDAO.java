@@ -36,6 +36,20 @@ public class BoardDAO {
 	
 	private final String ADD_CNT = "update board set cnt = cnt + 1 where seq = ? " ;
 	
+	// 검색 기능이 적용된 쿼리를 추가 (T : TITLE , W : WRITE , C : CONTENT , R : REGDATE )
+	
+	private final String BOARD_LIST_T = "select * from board where title like '%' ||?|| '%' order by seq desc";  // like 입력시 이렇게 입력해야한다. 
+	private final String BOARD_LIST_W = "select * from board where write like '%' ||?|| '%' order by seq desc";
+	private final String BOARD_LIST_C = "select * from board where content like '%' ||?|| '%' order by seq desc";
+	private final String BOARD_LIST_R = "select * from board where regdate like '%' ||?|| '%' order by seq desc";
+	
+	
+	
+	
+	
+	
+	
+	
 	// insertBoard ( BoardDTO dto ) 메소드  :
 	public void insertBoard ( BoardDTO dto ) {				// insertBoard 메소드를 호출하면 try 구문이 실행됨
 		System.out.println("insertBoard 기능 처리 =");
@@ -80,15 +94,46 @@ public class BoardDAO {
 			// ★ ArrayList 내에 저장되는 BoardDTO 는 while 문 안에서 선언
 			
 			
-			List<BoardDTO> boardList = new ArrayList <>() ;
+			List<BoardDTO> boardList = new ArrayList <>() ;  // boardList 현재는 null인 상태 (BoardDTO를 담는다)
 			
-			try {
+			/*
+			private final String BOARD_LIST_T = "select * from board where title like '%' ||?|| '%' order by seq desc";  // like 입력시 이렇게 입력해야한다. 
+			private final String BOARD_LIST_W = "select * from board where write like '%' ||?|| '%' order by seq desc";
+			private final String BOARD_LIST_C = "select * from board where content like '%' ||?|| '%' order by seq desc";
+			private final String BOARD_LIST_R = "select * from board where regdate like '%' ||?|| '%' order by seq desc";
+			*/
+			
+			// 검색의 변수 값이 잘 넘어오는지 확인
+			System.out.println("===DAO의 getBoardList====");
+			System.out.println(dto.getSearchCondition());
+			System.out.println(dto.getSearchKeyword());
+			
+			
+			try {   //★★★★★★
 				
 				conn = JDBCUtil.getConnection(); 		// conn 객체 활성화 : Oracle , XE , HR!@ , 1234
-				pstmt = conn.prepareStatement(BOARD_LIST) ;
+				// pstmt = conn.prepareStatement(BOARD_LIST) ;
+				
+
+				// SearchCondition 변수의 넘어오는 값에 따라서 분기 처리
+				
+				if (dto.getSearchCondition().equals("TITLE")) {
+					pstmt = conn.prepareStatement(BOARD_LIST_T);
+				} else if (dto.getSearchCondition().equals("WRITE")) {
+					pstmt = conn.prepareStatement(BOARD_LIST_W);
+				} else if (dto.getSearchCondition().equals("CONTENT")) {
+					pstmt = conn.prepareStatement(BOARD_LIST_C);
+				} else if (dto.getSearchCondition().equals("REGDATE")) {
+					pstmt = conn.prepareStatement(BOARD_LIST_R);
+				} 
+				
+				// ? 변수에 값을 할당
+				 
+				pstmt.setString(1, dto.getSearchKeyword());
+				
 				
 				// pstmt 를 실행 후 rs 에 레코드를 저장
-				rs = pstmt.executeQuery();		// BOARD_LIST를 select 한 레코드 값을 모두 rs에 담고 있다.
+				rs = pstmt.executeQuery();		// BOARD_LIST를 select 한 레코드 결과값을 담을 객체가 필요한데 이게 바로 rs ,모두 rs에 담고 있다.
 				
 				// System.out.println("DB Select 성공");
 				
@@ -113,11 +158,8 @@ public class BoardDAO {
 					
 					
 					// boardList : ArrayList의 add 메소드를 사용해서 boardDTO를 저장함
-					boardList.add(board);
-					
-					
-					
-					
+					boardList.add(board);  
+
 				}
 			
 				
@@ -134,7 +176,7 @@ public class BoardDAO {
 			}
 			
 			
-			return boardList ;
+			return boardList ;  // boardList : 각 LIst 안에 dto들이 들어있음 
 			
 		}
 	
@@ -158,7 +200,7 @@ public class BoardDAO {
 			
 				// rs : 레코드 1개
 				
-				rs = pstmt.executeQuery();
+				rs = pstmt.executeQuery();   // 레코드 1개가 나옴
 				
 				//rs의 값이 존재할 때 
 				

@@ -25,8 +25,16 @@ public class BoardDTO {
 	private String title ;
 	private String write ;
 	private String content ;
-	private Date regdate ;
+	private Date regdate ;     // 자바 date 2가지 
 	private int cnt ;
+	
+	// 검색기능의 필드 추가 : 
+	// searchCondition : TITLE, WRITE, CONTENT , REGDATE 중 하나의 값이 저장 ,DB의 검색할 컬럼명
+	// searchKeyword 검색어
+	private String searchCondition ;
+	private String searchKeyword ;
+	
+	
 	
 	
 }

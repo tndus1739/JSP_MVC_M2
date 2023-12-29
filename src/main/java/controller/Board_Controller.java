@@ -94,29 +94,55 @@ public class Board_Controller extends HttpServlet {
 					System.out.println("/getBoardList.do 요청");   // 마지막 / 를 기준으로 잘라낸 것을 path 변수에 담음
 					// 로직 처리
 					
+					// 검색어 처리 부분
+					
+					String searchCondition = request.getParameter("searchCondition") ;
+				    String searchKeyword = request.getParameter("searchKeyword") ;
+					
+				   
+				    // NULL 에 대한 처러
+				    if (searchCondition == null) {
+				    	
+				    	searchCondition = "TITLE" ;
+				    }
+					
+				    if (searchKeyword == null) {
+				    	
+				    	searchKeyword = "";
+				    }
+				    
+				    System.out.println("검색조건" + searchCondition);   // 값이 잘 넘어오는지 웹페이지에서 검색해보고 이클립스 콘솔에서 잘 출력되는지 확인
+				    System.out.println("검색어" + searchKeyword); 	// 그냥 새로고침하고 검색안하면 null 값이 나옴
+				    
+				    
 					// 1. BoardDTO 객체 생성
 					BoardDTO dto = new BoardDTO () ;
 					
+					// 검색어를 dto에 setter주입 후
+					dto.setSearchCondition(searchCondition);
+				    dto.setSearchKeyword(searchKeyword);
+					
 					// 2. BoardDAO 객체의 getboardList (dto) 
-					BoardDAO dao = new BoardDAO ();
+					BoardDAO dao = new BoardDAO ();  // 밑에 dao메소드를 호출하려면 객체생성 해야함
 					
 					// 리턴 받을 변수 선언
 					List<BoardDTO> boardList = new ArrayList <>();
 					// boardList : DB의 board 테이블의 레코드를 dto로 저장 후 ArrayList 내의 각 방에 저장된 상태
 					
 					boardList = dao.getBoardList(dto);    // dao메소드 호출, 호출하기 위해서는 dto라는 인풋값이 필요
-					// ctrl 누르면서  getBoardList 누르면 이동
+					// ctrl 누르면서  getBoardList 누르면 이동    // boardList : DB에서 가져온 dto들이 들어있음
 					
 					// boardList 클라이언트 view 페이지로 전송 : session 변수에 담아서 client  뷰페이지로 전송
 					//  client의 session 정보를 가져와서 session 변수에 할당
 					
-					HttpSession session = request.getSession();
+					HttpSession session = request.getSession();  // session : 그 사용자에게만 적용되는 
+																// 현재 요청한 클라이언트의 정보를 가져옴
 					
 					// 세션에 boardList 를 추가
 					session.setAttribute("boardList",boardList);     // "boardList" : session 변수에 담음 / boardList ( ArrayList)를 담겠다.
-					//                    변수명      변수값
+					//                   session변수명 session변수값
 					// 클라이언트 뷰 페이지
-					response.sendRedirect("getBoardList.jsp");
+					response.sendRedirect("getBoardList.jsp");   // 바로 위에 있는 "boardList"를 끄집어내서 뷰페이지로 출력 
 					
 					
 					
